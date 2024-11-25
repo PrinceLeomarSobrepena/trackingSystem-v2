@@ -45,11 +45,13 @@ exports.loginPage = (req, res) => {
   // Show all food items
 exports.getAllFood = async (req, res) => {
   try {
-    const foods = await Food.find(); // Retrieve all food items from the database
-    const view = req.query.view || 'product'; // Default to 'product' if no view is specified
-    
-    // Pass 'foods' and 'req.query' to the view
-    res.render(view, { foods, success: req.query.success });
+    if(req.session.isAdmin) {
+      const foods = await Food.find(); // Retrieve all food items from the database
+      const view = req.query.view || 'product'; // Default to 'product' if no view is specified
+      
+      // Pass 'foods' and 'req.query' to the view
+      res.render(view, { foods, success: req.query.success });
+    }
   } catch (error) {
     res.status(500).send('Failed to fetch food items');
   }
