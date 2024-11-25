@@ -44,9 +44,9 @@ app.get('/', (req, res) => {
 });
 
 // Catch-all route for 404 errors (optional)
-app.get('*', (req, res) => {
-   res.status(404).render('404', { isAuthenticated: req.session && req.session.userId });
- });
+// app.get('*', (req, res) => {
+//    res.status(404).render('404', { isAuthenticated: req.session && req.session.userId });
+//  });
 
 
 
