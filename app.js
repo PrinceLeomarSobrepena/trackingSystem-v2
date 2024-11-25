@@ -1,20 +1,25 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose'); // Import mongoose
 const express = require('express');
 const session = require('express-session');
+const bodyParser = require('body-parser');
 const path = require('path');
 const app = express();
 const upload = require('./config/multerConfig'); // Use multerConfig for file uploads
 const methodOverride = require('method-override');
+
 
 // Set view engine
 app.set('view engine', 'ejs');
 
 // Middleware for parsing form data
 app.use(express.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 
+
 // Serve static files like images, stylesheets, etc.
-app.use(express.static(path.join(__dirname, 'public'))); // Serving static files from 'public' folder
+app.use(express.static(path.join(__dirname, 'views')));
+app.use('/assets', express.static(path.join(__dirname, 'assets')));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Connect to MongoDB
@@ -24,10 +29,10 @@ mongoose.connect('mongodb+srv://BrainlessAizel17:BrainlessAizel17@student.kccdw.
 
 // Session middleware setup
 app.use(session({
-  secret: 'your-secret-key',
-  resave: false,
-  saveUninitialized: true,
-  cookie: { secure: process.env.NODE_ENV === 'production' } // Make sure this is true in production
+  secret: 'your-secret-key', // Use a secret key
+  resave: false, // Don't save session if unmodified
+  saveUninitialized: true, // Save uninitialized sessions
+  cookie: { secure: false } // Set to true if using HTTPS
 }));
 
 // Import routes
@@ -39,10 +44,13 @@ app.get('/', (req, res) => {
   res.redirect('/login');
 });
 
-// Catch-all route for 404 errors
-app.use((req, res, next) => {
-  res.status(404).render('404', { isAuthenticated: req.session && req.session.userId });
-});
+// Catch-all route for 404 errors (optional)
+// app.get('*', (req, res) => {
+//    res.status(404).render('404', { isAuthenticated: req.session && req.session.userId });
+//  });
+
+
+
 
 // Start the server
 app.listen(3000, () => {
