@@ -18,7 +18,7 @@ app.use(methodOverride('_method'));
 
 
 // Serve static files like images, stylesheets, etc.
-app.use(express.static(path.join(__dirname, 'assets')));
+app.use(express.static(path.join(__dirname, 'views')));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Connect to MongoDB
@@ -52,6 +52,6 @@ app.get('*', (req, res) => {
 
 
 // Start the server
-app.listen(3000, () => {
-  console.log('Server is running on http://localhost:3000');
-});
+// app.listen(3000, () => {
+//   console.log('Server is running on http://localhost:3000');
+// });
